@@ -34,7 +34,8 @@ namespace RecipeBook
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppIdentityDbContext>();
 
-
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, 
+                AdditionalUserClaimsPrincipalFactory>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
