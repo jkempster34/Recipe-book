@@ -1,6 +1,4 @@
-using System;
-
-namespace RecipeBook.Models
+namespace RecipeBook.ViewModels
 {
     public class ErrorViewModel
     {
