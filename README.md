@@ -12,6 +12,9 @@ dotnet ef migrations add InitialIdentityModel --context appidentitydbcontext -o 
 or (from the Package Manager Console in Visual Studio)
 Add-Migration InitialIdentityModel -Context AppIdentityDbContext -OutputDir DataIdentity/Migrations
 
+Add-Migration InitialRecipBookModel -Context RecipeBookContext -OutputDir Data/Migrations
+
+Update-Database -Context RecipeBookContext
 
 RecipeBookDb
 ```

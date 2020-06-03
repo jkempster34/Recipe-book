@@ -32,6 +32,10 @@ namespace RecipeBook
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
                 AdditionalUserClaimsPrincipalFactory>();
 
+            // RecipeBook
+            services.AddDbContext<RecipeBookContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("RecipeBookConnection")));
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
