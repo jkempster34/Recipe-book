@@ -1,0 +1,55 @@
+[
+  {
+    "RecipeId": 1,
+    "Item": "Water (room temperature)",
+    "Quantity": 180,
+    "Unit": "grams"
+  },
+  {
+    "RecipeId": 1,
+    "Item": "Instant yeast",
+    "Quantity": 8,
+    "Unit": "grams"
+  },
+  {
+    "RecipeId": 1,
+    "Item": "Whole milk (room temperature)",
+    "Quantity": 180,
+    "Unit": "grams"
+  },
+  {
+    "RecipeId": 1,
+    "Item": "Canola oil (or vegatable)",
+    "Quantity": 70,
+    "Unit": "grams"
+  },
+  {
+    "RecipeId": 1,
+    "Item": "Eggs (large)",
+    "Quantity": 4
+  },
+  {
+    "RecipeId": 1,
+    "Item": "Granulated sugar",
+    "Quantity": 55,
+    "Unit": "grams"
+  },
+  {
+    "RecipeId": 1,
+    "Item": "Bread flour",
+    "Quantity": 800,
+    "Unit": "grams"
+  },
+  {
+    "RecipeId": 1,
+    "Item": "Sea salt (fine)",
+    "Quantity": 18,
+    "Unit": "grams"
+  },
+  {
+    "RecipeId": 1,
+    "Item": "Sesame seeds",
+    "Quantity": 35,
+    "Unit": "grams"
+  }
+]

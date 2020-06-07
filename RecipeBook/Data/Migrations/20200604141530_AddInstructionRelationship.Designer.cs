@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeBook.Data;
 
 namespace RecipeBook.Data.Migrations
 {
     [DbContext(typeof(RecipeBookContext))]
-    partial class RecipeBookContextModelSnapshot : ModelSnapshot
+    [Migration("20200604141530_AddInstructionRelationship")]
+    partial class AddInstructionRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,7 +107,7 @@ namespace RecipeBook.Data.Migrations
                     b.Property<float>("Quantity")
                         .HasColumnType("real");
 
-                    b.Property<int>("RecipeId")
+                    b.Property<int?>("RecipeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Unit")
@@ -125,20 +127,17 @@ namespace RecipeBook.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("InstructionNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InstructionText")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("RecipeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Instructions");
+                    b.ToTable("Instruction");
                 });
 
             modelBuilder.Entity("RecipeBook.Models.Recipe", b =>
@@ -204,17 +203,15 @@ namespace RecipeBook.Data.Migrations
 
             modelBuilder.Entity("RecipeBook.Models.Ingredient", b =>
                 {
-                    b.HasOne("RecipeBook.Models.Recipe", "Recipe")
+                    b.HasOne("RecipeBook.Models.Recipe", null)
                         .WithMany("Ingredients")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("RecipeBook.Models.Instruction", b =>
                 {
                     b.HasOne("RecipeBook.Models.Recipe", "Recipe")
-                        .WithMany("Instructions")
+                        .WithMany("Method")
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

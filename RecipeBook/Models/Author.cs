@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeBook.Models
 {
-    public class Author : BaseModel
+    public class Author : BaseEntity
     {
-        public string IdentityGuid { get; set; }
+        // Refers to IdentityUser
+        public string IdentityUsername { get; set; }
 
+        // Navigation properties
         public ICollection<Recipe> Recipes { get; set; }
         public ICollection<Comment> Comments { get; set; }
     }

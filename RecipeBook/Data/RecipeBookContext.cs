@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RecipeBook.Models;
-
 namespace RecipeBook.Data
 {
     public class RecipeBookContext : DbContext
@@ -15,9 +14,12 @@ namespace RecipeBook.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Instruction> Instructions { get; set; }
+        public DbSet<CategoryRecipe> CategoryRecipe { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Many-to-many Category and Recipe
             modelBuilder.Entity<CategoryRecipe>()
                 .HasKey(key => new { key.CategoryId, key.RecipeId });
 

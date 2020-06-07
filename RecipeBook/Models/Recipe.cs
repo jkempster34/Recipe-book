@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RecipeBook.Models
 {
-    public class Recipe : BaseModel
+    public class Recipe : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -14,8 +14,9 @@ namespace RecipeBook.Models
         public float Rating { get; set; }
         public Course Course { get; set; }
 
-        public ICollection<Instruction> Method { get; set; }
-        public List<Ingredient> Ingredients { get; set; }
+        // Navigation properties
+        public IEnumerable<Instruction> Instructions { get; set; }
+        public ICollection<Ingredient> Ingredients { get; set; }
         public Author Author { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<CategoryRecipe> CategoryRecipes { get; set; }

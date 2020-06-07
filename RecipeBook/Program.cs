@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RecipeBook.Data;
 using RecipeBook.Data.Identity;
 
 namespace RecipeBook
@@ -24,6 +25,10 @@ namespace RecipeBook
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+
+                    var recipeBookContext = services.GetRequiredService<RecipeBookContext>();
+                    var recipeBookContextSeeder = services.GetRequiredService<RecipeBookContextSeed>();
+                    await recipeBookContextSeeder.SeedAsync(recipeBookContext, loggerFactory);
                 }
                 catch (Exception ex)
                 {
