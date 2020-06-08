@@ -1,66 +1,53 @@
 [
   {
-    "RecipeId": 1,
     "InstructionNumber": 1,
     "InstructionText": "In the mixing bowl combine the water, instant yeast, whole milk, canola oil, eggs, granulated sugar, and half of the bread flour. Using a rubber spatula, stir the ingredients together until it forms a thick batter."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 2,
     "InstructionText": "Add the remaining bread flour and sea salt mixture to the mixing bowl and fold the ingredients together until the dough become a shaggy mass."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 3,
     "InstructionText": "Scrape down the spatula and the sides of the bowl with a plastic scraper. Scrape the dough out of the bowl and on the work surface. The dough will be sticky. Do not add any flour to the work surface while kneading."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 4,
     "InstructionText": "Knead the dough with one hand while using your plastic scrape to gather the dough from the work surface and your hand. Kneading for 4 minutes to incorporate the ingredients and develop the gluten."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 5,
     "InstructionText": "After 4 minutes of kneading the dough will be strong enough to start stretching and folding using the plastic scrape."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 6,
     "InstructionText": "Stretch and fold the dough for 6 – 8 minutes or until the dough become smooth and elastic. The dough should be strong enough to pull away from the table in one piece. The dough will be slightly sticky at the end of the kneading process."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 7,
     "InstructionText": "Lightly spray or coat the mixing bowl with vegetable oil."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 8,
     "InstructionText": "Form the dough into a ball and place it into the oiled mixing bowl. Turn the dough over in the oil to lightly coat the dough."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 9,
     "InstructionText": "Cover with plastic wrap and let ferment for 1 hour at room temperature 70°F-76°F (21°C – 23°C). The dough will grow 1 time the original size."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 10,
     "InstructionText": "Uncover the bowl and turn the dough onto a lightly oiled work surface."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 11,
     "InstructionText": "Fold the dough in 3rds from top to bottom and left to right."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 12,
     "InstructionText": "Place the folded dough back into the bowl that has been lightly sprayed or oiled. Lightly spray or oil the top of the dough."
   },
   {
-    "RecipeId": 1,
     "InstructionNumber": 13,
     "InstructionText": "Cover with plastic wrap and let ferment for 1 hour at room temperature 70°F-76°F (21°C – 23°C). The dough will grow 1-½ times the original size."
   }

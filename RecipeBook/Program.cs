@@ -20,6 +20,7 @@ namespace RecipeBook
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                var hostingEnv = services.GetRequiredService<IWebHostEnvironment>();
                 try
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
@@ -27,8 +28,7 @@ namespace RecipeBook
                     await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
 
                     var recipeBookContext = services.GetRequiredService<RecipeBookContext>();
-                    var recipeBookContextSeeder = services.GetRequiredService<RecipeBookContextSeed>();
-                    await recipeBookContextSeeder.SeedAsync(recipeBookContext, loggerFactory);
+                    RecipeBookContextSeed.Seed(recipeBookContext, loggerFactory, hostingEnv);
                 }
                 catch (Exception ex)
                 {

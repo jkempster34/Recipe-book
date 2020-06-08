@@ -48,9 +48,11 @@ namespace RecipeBook.Areas.Identity.Pages.Account
         {
             [Required]
             [StringLength(50, ErrorMessage = "First name must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
             [Required]
+            [Display(Name = "Last Name")]
             [StringLength(50, ErrorMessage = "Last name must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
             public string LastName { get; set; }
 

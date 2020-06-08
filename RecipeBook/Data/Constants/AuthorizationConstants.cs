@@ -1,4 +1,4 @@
-﻿namespace RecipeBook.Data.Identity
+﻿namespace RecipeBook.Data.Constants
 {
     public static class AuthorizationConstants
     {
@@ -7,6 +7,7 @@
             public const string ADMINISTRATORS = "Administrators";
         }
 
+        public const string DEFAULT_USER_USERNAME = "demouser@recipebook.com";
         public const string DEFAULT_PASSWORD = "Pass@word1";
     }
 }

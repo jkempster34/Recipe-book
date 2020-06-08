@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RecipeBook.Data.Migrations
 {
-    public partial class InitialRecipBookModel : Migration
+    public partial class InitialRecipeBookModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace RecipeBook.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdentityGuid = table.Column<string>(nullable: true)
+                    IdentityUsername = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,7 +26,7 @@ namespace RecipeBook.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(nullable: true)
+                    CategoryName = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,10 +39,10 @@ namespace RecipeBook.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     DatePosted = table.Column<DateTime>(nullable: false),
-                    Photo = table.Column<string>(nullable: true),
+                    Photo = table.Column<string>(nullable: false),
                     Rating = table.Column<float>(nullable: false),
                     Course = table.Column<int>(nullable: false),
                     AuthorId = table.Column<int>(nullable: true)
@@ -89,9 +89,9 @@ namespace RecipeBook.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DatePosted = table.Column<DateTime>(nullable: false),
-                    Text = table.Column<string>(nullable: true),
+                    Text = table.Column<string>(maxLength: 500, nullable: false),
                     AuthorId = table.Column<int>(nullable: true),
-                    RecipeId = table.Column<int>(nullable: true)
+                    RecipeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,7 +107,7 @@ namespace RecipeBook.Data.Migrations
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,10 +116,10 @@ namespace RecipeBook.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Item = table.Column<string>(nullable: true),
+                    Item = table.Column<string>(nullable: false),
                     Quantity = table.Column<float>(nullable: false),
                     Unit = table.Column<string>(nullable: true),
-                    RecipeId = table.Column<int>(nullable: true)
+                    RecipeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,27 +129,28 @@ namespace RecipeBook.Data.Migrations
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Instruction",
+                name: "Instructions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Text = table.Column<string>(nullable: true),
-                    RecipeId = table.Column<int>(nullable: true)
+                    InstructionNumber = table.Column<int>(nullable: false),
+                    InstructionText = table.Column<string>(maxLength: 500, nullable: false),
+                    RecipeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Instruction", x => x.Id);
+                    table.PrimaryKey("PK_Instructions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Instruction_Recipes_RecipeId",
+                        name: "FK_Instructions_Recipes_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -173,8 +174,8 @@ namespace RecipeBook.Data.Migrations
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Instruction_RecipeId",
-                table: "Instruction",
+                name: "IX_Instructions_RecipeId",
+                table: "Instructions",
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
@@ -195,7 +196,7 @@ namespace RecipeBook.Data.Migrations
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
-                name: "Instruction");
+                name: "Instructions");
 
             migrationBuilder.DropTable(
                 name: "Categories");

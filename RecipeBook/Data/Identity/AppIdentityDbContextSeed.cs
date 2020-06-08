@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using RecipeBook.Data.Constants;
 using System.Threading.Tasks;
 
 namespace RecipeBook.Data.Identity
@@ -11,8 +12,8 @@ namespace RecipeBook.Data.Identity
 
             var defaultUser = new ApplicationUser
             {
-                UserName = "demouser@recipebook.com",
-                Email = "demouser@recipebook.com",
+                UserName = AuthorizationConstants.DEFAULT_USER_USERNAME,
+                Email = AuthorizationConstants.DEFAULT_USER_USERNAME,
                 FirstName = "Demo",
                 LastName = "User",
                 EmailConfirmed = true

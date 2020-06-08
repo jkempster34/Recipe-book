@@ -1,118 +1,119 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using RecipeBook.Data.Constants;
 using RecipeBook.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace RecipeBook.Data
 {
-    public class RecipeBookContextSeed
+    public static class RecipeBookContextSeed
     {
-        private readonly IWebHostEnvironment _hosting;
-
-        public RecipeBookContextSeed(IWebHostEnvironment hosting)
+        public static void Seed(RecipeBookContext recipeBookContext, ILoggerFactory loggerFactory,
+            IWebHostEnvironment hostingEnv)
         {
-            _hosting = hosting;
-        }
+            var logger = loggerFactory.CreateLogger(typeof(RecipeBookContextSeed));
 
-        public async Task SeedAsync(RecipeBookContext recipeBookContext, ILoggerFactory loggerFactory)
-        {
             try
             {
-                if (!recipeBookContext.Authors.Any())
+                if (recipeBookContext.Authors.Any())
                 {
-                    var author = new Author { IdentityUsername = "demouser@recipebook.com" };
-                    recipeBookContext.Authors.Add(author);
-                    await recipeBookContext.SaveChangesAsync();
+                    logger.LogInformation("The database has already been seeded");
+                    return;
                 }
 
-                if (!recipeBookContext.Recipes.Any())
+                var author = new Author { IdentityUsername = AuthorizationConstants.DEFAULT_USER_USERNAME };
+                recipeBookContext.Authors.Add(author);
+                recipeBookContext.SaveChanges();
+
+                var recipe = new Recipe
                 {
-                    recipeBookContext.Recipes.AddRange(GetPreconfiguredRecipes());
-
-                    // Needed to explicitly set recipe Id so that relationships can be defined
-                    using (var transaction = await recipeBookContext.Database.BeginTransactionAsync())
-                    {
-                        recipeBookContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Recipes ON");
-                        await recipeBookContext.SaveChangesAsync();
-                        recipeBookContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Recipes OFF");
-                        await transaction.CommitAsync();
-                    }
-                }
-
-                if (!recipeBookContext.Instructions.Any())
-                {
-                    recipeBookContext.Instructions.AddRange(GetPreconfiguredInstructions());
-                    await recipeBookContext.SaveChangesAsync();
-                }
-
-                if (!recipeBookContext.Categories.Any())
-                {
-                    recipeBookContext.Categories.AddRange(GetPreConfiguredCategories());
-                    await recipeBookContext.SaveChangesAsync();
-                }
-
-                if (!recipeBookContext.Ingredients.Any())
-                {
-                    recipeBookContext.Ingredients.AddRange(GetPreConfiguredIngredients());
-                    await recipeBookContext.SaveChangesAsync();
-                }
-
-                //if(!recipeBookContext.CategoryRec)
-            }
-            catch (Exception exception)
-            {
-                var logger = loggerFactory.CreateLogger<RecipeBookContextSeed>();
-                logger.LogError($"Failed to seed RecipeBookDb {exception.Message}");
-                throw;
-            }
-
-        }
-
-        private static IEnumerable<Recipe> GetPreconfiguredRecipes()
-        {
-            return new List<Recipe>()
-            {
-                new Recipe {
-                    Id = 1,
                     Name = "Sesame seed burger buns",
                     Description = "Homemade Hamburger Buns",
                     DatePosted = DateTime.Today,
                     // TODO: Implement photo saving
                     Photo = "",
                     Rating = 4.5f,
-                    Course = Course.Mains
+                    Course = Course.Mains,
+                    Author = author,
+                    AuthorId = author.Id
+                };
+                recipeBookContext.Recipes.Add(recipe);
+                recipeBookContext.SaveChanges();
+
+                var instructions = GetSeedDataFromJson<Instruction>(hostingEnv, path: "Data/SeedData/recipeInstructions.json",
+                    logger);
+                foreach (var instruction in instructions)
+                {
+                    instruction.RecipeId = recipe.Id;
                 }
-            };
-        }
+                recipeBookContext.Instructions.AddRange(instructions);
+                recipeBookContext.SaveChanges();
 
-        private IEnumerable<Instruction> GetPreconfiguredInstructions()
-        {
-            var filePath = Path.Combine(_hosting.ContentRootPath, "Data/recipeInstructions.json");
-            var json = File.ReadAllText(filePath);
-            return JsonConvert.DeserializeObject<IEnumerable<Instruction>>(json);
-        }
+                var ingredients = GetSeedDataFromJson<Ingredient>(hostingEnv, path: "Data/SeedData/recipeIngredients.json",
+                    logger);
+                foreach (var ingredient in ingredients)
+                {
+                    ingredient.RecipeId = recipe.Id;
+                }
+                recipeBookContext.Ingredients.AddRange(ingredients);
+                recipeBookContext.SaveChanges();
 
-        private IEnumerable<Category> GetPreConfiguredCategories()
-        {
-            return new List<Category>()
+                var comments = GetSeedDataFromJson<Comment>(hostingEnv, path: "Data/SeedData/recipeComments.json",
+                    logger);
+                foreach (var comment in comments)
+                {
+                    comment.RecipeId = recipe.Id;
+                    comment.AuthorId = author.Id;
+                    comment.DatePosted = DateTime.Today;
+                }
+                recipeBookContext.Comments.AddRange(comments);
+                recipeBookContext.SaveChanges();
+
+                var categories = new List<Category>()
+                {
+                    new Category { CategoryName = "Healthy" },
+                    new Category { CategoryName = "Cakes and baking" },
+                    new Category { CategoryName = "Cheap and healthy" }
+                };
+                recipeBookContext.Categories.AddRange(categories);
+                recipeBookContext.SaveChanges();
+
+                var categoryRecipe = new CategoryRecipe()
+                {
+                    CategoryId = categories.Single(category => category.CategoryName == "Cakes and baking").Id,
+                    RecipeId = recipe.Id
+                };
+                recipeBookContext.CategoryRecipe.AddRange(categoryRecipe);
+                recipeBookContext.SaveChanges();
+
+            }
+            catch (Exception exception)
             {
-                new Category { CategoryName = "Healthy" },
-                new Category { CategoryName = "Cakes and baking" },
-                new Category { CategoryName = "Cheap and healthy" }
-            };
+                logger.LogError($"Failed to seed RecipeBookDb {exception.Message}");
+                throw;
+            }
+
         }
 
-        private IEnumerable<Ingredient> GetPreConfiguredIngredients()
+        private static IEnumerable<T> GetSeedDataFromJson<T>(IWebHostEnvironment hostingEnv, string path,
+            ILogger logger)
         {
-            var filePath = Path.Combine(_hosting.ContentRootPath, "Data/recipeIngredients.json");
-            var json = File.ReadAllText(filePath);
-            return JsonConvert.DeserializeObject<IEnumerable<Ingredient>>(json);
+            try
+            {
+                var filePath = Path.Combine(hostingEnv.ContentRootPath, path);
+                var json = File.ReadAllText(filePath);
+                return JsonConvert.DeserializeObject<IEnumerable<T>>(json);
+            }
+            catch (Exception exception)
+            {
+                logger.LogError($"Failed to get data from file {path} with message: {exception}");
+                throw;
+            }
+
         }
     }
 }
